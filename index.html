@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Malparados — Menú Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #ffd521;
+      --dark: #0a0a0a;
+      --surface: #1a1a1a;
+      --card: #252525;
+      --border: #333333;
+      --text: #ffffff;
+      --text-muted: #b0b0b0;
+      --accent: #ffd521;
+      --accent-dark: #e6b800;
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--dark);
+      color: var(--text);
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: var(--surface);
+      border-bottom: 2px solid var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      z-index: 100;
+    }
+
+    .menu-toggle {
+      background: none;
+      border: none;
+      color: var(--primary);
+      font-size: 24px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 8px;
+      transition: transform 0.2s;
+    }
+
+    .menu-toggle:active {
+      transform: scale(0.95);
+    }
+
+    .menu-toggle span {
+      display: block;
+      width: 24px;
+      height: 3px;
+      background: var(--primary);
+      border-radius: 2px;
+    }
+
+    .logo-header {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--primary);
+      text-transform: uppercase;
+      text-shadow: 0 0 10px rgba(255, 213, 33, 0.3);
+    }
+
+    .close-menu {
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 28px;
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    /* ── SIDEBAR MENU ── */
+    .sidebar {
+      position: fixed;
+      left: -100%;
+      top: 0;
+      width: 70%;
+      max-width: 280px;
+      height: 100vh;
+      background: rgba(10, 10, 10, 0.98);
+      backdrop-filter: blur(8px);
+      border-right: 2px solid var(--primary);
+      z-index: 200;
+      transition: left 0.3s ease;
+      overflow-y: auto;
+      padding-top: 60px;
+    }
+
+    .sidebar.open {
+      left: 0;
+    }
+
+    .sidebar-header {
+      padding: 20px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sidebar-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 1px;
+      color: var(--primary);
+      text-transform: uppercase;
+    }
+
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .sidebar-link {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: transparent;
+      border: none;
+      width: 100%;
+      text-align: left;
+    }
+
+    .sidebar-link:hover,
+    .sidebar-link.active {
+      background: rgba(255, 213, 33, 0.1);
+      color: var(--primary);
+      border-left: 3px solid var(--primary);
+      padding-left: 13px;
+    }
+
+    /* ── OVERLAY ── */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 150;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* ── MAIN CONTENT ── */
+    .main {
+      margin-top: 60px;
+      padding: 20px 12px 80px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 20px 0;
+    }
+
+    .hero-logo {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 16px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 8px rgba(255, 213, 33, 0.3));
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 36px;
+      letter-spacing: 3px;
+      color: var(--primary);
+      text-transform: uppercase;
+      text-shadow: 0 0 15px rgba(255, 213, 33, 0.4);
+      margin-bottom: 8px;
+    }
+
+    .hero-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* ── CATEGORÍA SECCIÓN ── */
+    .category-section {
+      margin-bottom: 32px;
+    }
+
+    .category-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding: 0 4px;
+    }
+
+    .category-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 1px;
+      color: var(--primary);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .category-line {
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary) 0%, transparent 100%);
+    }
+
+    /* ── GRID PRODUCTOS ── */
+    .products-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    /* ── CARD PRODUCTO ── */
+    .product-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .product-card:active {
+      transform: scale(0.98);
+      border-color: var(--primary);
+    }
+
+    .card-img-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: var(--surface);
+      overflow: hidden;
+    }
+
+    .card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+
+    .product-card:active .card-img {
+      transform: scale(1.05);
+    }
+
+    .no-img-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--surface), var(--card));
+    }
+
+    .no-img-placeholder svg {
+      opacity: 0.3;
+    }
+
+    .card-body {
+      padding: 10px;
+    }
+
+    .card-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    .card-price {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    /* ── LISTA PRODUCTOS (sin imágenes) ── */
+    .products-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      background: var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--card);
+      padding: 12px 14px;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .list-item:active {
+      background: rgba(255, 213, 33, 0.1);
+    }
+
+    .list-item:first-child {
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+
+    .list-item:last-child {
+      border-radius: 0 0 var(--radius) var(--radius);
+    }
+
+    .list-name {
+      font-size: 12px;
+      color: var(--text);
+      flex: 1;
+      font-weight: 500;
+    }
+
+    .list-price {
+      font-size: 12px;
+      color: var(--primary);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    /* ── MODAL PRODUCTO ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 500;
+      display: flex;
+      align-items: flex-end;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal-sheet {
+      width: 100%;
+      max-height: 88vh;
+      background: var(--surface);
+      border-radius: 16px 16px 0 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    .modal-overlay.open .modal-sheet {
+      transform: translateY(0);
+    }
+
+    .modal-img-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      background: var(--card);
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .modal-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    .modal-body {
+      padding: 18px 20px 28px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .modal-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 24px;
+      letter-spacing: 1px;
+      color: var(--primary);
+      line-height: 1.1;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .modal-price {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    .modal-desc {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+
+    .modal-counter {
+      text-align: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 14px;
+      letter-spacing: 1px;
+    }
+
+    /* ── PROMO MODAL ── */
+    .promo-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .promo-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .promo-box {
+      position: relative;
+      max-width: 90vw;
+      max-height: 80vh;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 2px solid var(--primary);
+    }
+
+    .promo-img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .promo-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 11px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      margin-top: 40px;
+    }
+
+    /* ── SCROLL TOP ── */
+    .scroll-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: none;
+      color: var(--dark);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s;
+      z-index: 90;
+      font-weight: 700;
+    }
+
+    .scroll-top.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .scroll-top:active {
+      transform: scale(0.95);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 360px) {
+      .hero-title {
+        font-size: 28px;
+      }
+
+      .category-title {
+        font-size: 18px;
+      }
+
+      .card-name {
+        font-size: 11px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <div class="header">
+    <button class="menu-toggle" id="menuToggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <div class="logo-header">MALPARADOS</div>
+    <div style="width: 40px;"></div>
+  </div>
+
+  <!-- SIDEBAR MENU -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-title">Menú</div>
+      <button class="close-menu" id="closeMenu">✕</button>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav"></nav>
+  </div>
+
+  <!-- OVERLAY -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main">
+    <div class="hero">
+      <img src="imgs/logo.png" alt="Malparados" class="hero-logo">
+      <div class="hero-title">MALPARADOS</div>
+      <div class="hero-subtitle">Sabor sin reglas, actitud sin límites</div>
+    </div>
+    <div id="mainContent"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">© 2026 MALPARADOS · Todos los derechos reservados</div>
+
+  <!-- SCROLL TOP -->
+  <button class="scroll-top" id="scrollTop">↑</button>
+
+  <!-- MODAL PRODUCTO -->
+  <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+    <div class="modal-sheet" id="modalSheet">
+      <div class="modal-img-wrap" id="modalImgWrap">
+        <button class="modal-close-btn" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-name" id="modalName"></div>
+        <div class="modal-price" id="modalPrice"></div>
+        <div class="modal-desc" id="modalDesc"></div>
+        <div class="modal-counter" id="modalCounter"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROMO MODAL -->
+  <div class="promo-overlay" id="promoOverlay">
+    <div class="promo-box">
+      <img src="imgs/promo.png" alt="Promoción" class="promo-img" onerror="closePromo()">
+      <button class="promo-close" onclick="closePromo()">✕</button>
+    </div>
+  </div>
+
+  <script>
+    // ── CONFIGURACIÓN ──
+    const CONFIG = {
+      restaurante: "Malparados",
+      promo: {
+        activa: true,
+        imagen: "imgs/promo.png"
+      },
+      categorias: [
+        { id: "hamburguesas", label: "Hamburguesas" },
+        { id: "hotdogs", label: "Hot Dogs" },
+        { id: "papas_locas", label: "Papas Locas" },
+        { id: "combos", label: "Combos" },
+        { id: "desgranados", label: "Desgranados" },
+        { id: "alitas", label: "Alitas" },
+        { id: "entradas", label: "Entradas" },
+        { id: "bowls", label: "Bowls" },
+        { id: "bebidas", label: "Bebidas" },
+        { id: "adicionales", label: "Adicionales" }
+      ],
+      sinFotos: ["adicionales", "bebidas"]
+    };
+
+    let menuData = [];
+    let currentCategoryProducts = [];
+    let currentProductIndex = 0;
+
+    // ── INIT ──
+    async function init() {
+      try {
+        const res = await fetch('menu.json');
+        menuData = await res.json();
+      } catch (e) {
+        console.warn('menu.json no encontrado');
+        menuData = [];
+      }
+      buildSidebar();
+      buildMenu();
+      initScrollTop();
+      if (CONFIG.promo.activa) {
+        setTimeout(() => openPromo(), 800);
+      }
+    }
+
+    // ── SIDEBAR ──
+    function buildSidebar() {
+      const nav = document.getElementById('sidebarNav');
+      CONFIG.categorias.forEach((cat) => {
+        const productos = menuData.filter(p => p.categoria === cat.id);
+        if (productos.length === 0) return;
+        const link = document.createElement('button');
+        link.className = 'sidebar-link';
+        link.textContent = cat.label;
+        link.dataset.cat = cat.id;
+        link.onclick = () => {
+          document.getElementById('sec-' + cat.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          closeSidebar();
+        };
+        nav.appendChild(link);
+      });
+    }
+
+    function openSidebar() {
+      document.getElementById('sidebar').classList.add('open');
+      document.getElementById('overlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeSidebar() {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('overlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // ── MENÚ ──
+    function buildMenu() {
+      const main = document.getElementById('mainContent');
+      main.innerHTML = '';
+
+      CONFIG.categorias.forEach(cat => {
+        const productos = menuData
+          .filter(p => p.categoria === cat.id)
+          .sort((a, b) => (a.precioNumerico || 0) - (b.precioNumerico || 0));
+        if (productos.length === 0) return;
+
+        const section = document.createElement('div');
+        section.className = 'category-section';
+        section.id = 'sec-' + cat.id;
+
+        section.innerHTML = `
+          <div class="category-header">
+            <div class="category-title">${cat.label}</div>
+            <div class="category-line"></div>
+          </div>
+        `;
+
+        if (CONFIG.sinFotos.includes(cat.id)) {
+          const list = document.createElement('div');
+          list.className = 'products-list';
+          productos.forEach(p => {
+            const item = document.createElement('div');
+            item.className = 'list-item';
+            item.innerHTML = `
+              <span class="list-name">${p.nombre}</span>
+              <span class="list-price">${p.precio}</span>
+            `;
+            list.appendChild(item);
+          });
+          section.appendChild(list);
+        } else {
+          const grid = document.createElement('div');
+          grid.className = 'products-grid';
+          productos.forEach((p, idx) => {
+            const card = document.createElement('div');
+            card.className = 'product-card' + (p.imagen ? ' has-img' : '');
+            card.onclick = () => openModal(cat.id, idx);
+
+            const imgHtml = p.imagen
+              ? `<img class="card-img" src="${p.imagen}" alt="${p.nombre}" loading="lazy" onerror="this.parentNode.innerHTML=noImgHtml()">`
+              : noImgHtml();
+
+            card.innerHTML = `
+              <div class="card-img-wrap">${imgHtml}</div>
+              <div class="card-body">
+                <div class="card-name">${p.nombre}</div>
+                <div class="card-price">${p.precio}</div>
+              </div>
+            `;
+            grid.appendChild(card);
+          });
+          section.appendChild(grid);
+        }
+
+        main.appendChild(section);
+      });
+    }
+
+    function noImgHtml() {
+      return `<div class="no-img-placeholder">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1">
+          <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+          <polyline points="21,15 16,10 5,21"/>
+        </svg>
+      </div>`;
+    }
+
+    // ── MODAL ──
+    function openModal(catId, idx) {
+      const productos = menuData
+        .filter(p => p.categoria === catId)
+        .sort((a, b) => (a.precioNumerico || 0) - (b.precioNumerico || 0));
+      currentCategoryProducts = productos;
+      currentProductIndex = idx;
+      renderModal();
+      document.getElementById('modalOverlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function renderModal() {
+      const p = currentCategoryProducts[currentProductIndex];
+      const wrap = document.getElementById('modalImgWrap');
+
+      const oldImg = wrap.querySelector('.modal-img, .modal-no-img');
+      if (oldImg) oldImg.remove();
+
+      if (p.imagen) {
+        const img = document.createElement('img');
+        img.className = 'modal-img';
+        img.src = p.imagen;
+        img.alt = p.nombre;
+        img.onerror = () => { img.remove(); wrap.insertAdjacentHTML('afterbegin', '<div class="modal-no-img">' + noImgHtml() + '</div>'); };
+        wrap.insertAdjacentElement('afterbegin', img);
+      } else {
+        wrap.insertAdjacentHTML('afterbegin', '<div class="modal-no-img">' + noImgHtml() + '</div>');
+      }
+
+      document.getElementById('modalName').textContent = p.nombre;
+      document.getElementById('modalPrice').textContent = p.precio;
+      document.getElementById('modalDesc').textContent = p.descripcion || '';
+
+      const total = currentCategoryProducts.length;
+      document.getElementById('modalCounter').textContent = `${currentProductIndex + 1} / ${total}`;
+    }
+
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function handleOverlayClick(e) {
+      if (e.target === document.getElementById('modalOverlay')) closeModal();
+    }
+
+    // ── PROMO ──
+    function openPromo() {
+      document.getElementById('promoOverlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closePromo() {
+      document.getElementById('promoOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // ── SCROLL TOP ──
+    function initScrollTop() {
+      const btn = document.getElementById('scrollTop');
+      window.addEventListener('scroll', () => {
+        btn.classList.toggle('visible', window.scrollY > 300);
+      }, { passive: true });
+      btn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ── EVENT LISTENERS ──
+    document.getElementById('menuToggle').onclick = openSidebar;
+    document.getElementById('closeMenu').onclick = closeSidebar;
+    document.getElementById('overlay').onclick = closeSidebar;
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        if (document.getElementById('modalOverlay').classList.contains('open')) closeModal();
+        if (document.getElementById('promoOverlay').classList.contains('open')) closePromo();
+        if (document.getElementById('sidebar').classList.contains('open')) closeSidebar();
+      }
+    });
+
+    // ── INIT ──
+    init();
+  </script>
+</body>
+</html>

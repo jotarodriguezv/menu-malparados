@@ -1,0 +1,371 @@
+[
+  {
+    "id": 1,
+    "nombre": "PAPAS FRANCESAS",
+    "precio": "$ 4.500",
+    "descripcion": "Agranda tu combo con 120 g de crujiente papas a la francesa 🍟😋",
+    "imagen": "imgs/productos/malparados_adicional_papasfrancesa.jpg",
+    "categoria": "adicionales",
+    "precioNumerico": 4500
+  },
+  {
+    "id": 2,
+    "nombre": "AGRANDA TU COMBO",
+    "precio": "$ 7.500",
+    "descripcion": "Agranda tu combo con una gaseosa p400 y un helado Potsy por tan solo 7500 pesos",
+    "imagen": "imgs/productos/malparados_adicional_agrandacombo.jpg",
+    "categoria": "adicionales",
+    "precioNumerico": 7500
+  },
+  {
+    "id": 3,
+    "nombre": "ALITAS BBQ",
+    "precio": "$ 26.900",
+    "descripcion": "Prueba las  más crujientes y delicosas alitas  de pollo apanadas con  panco, 10 piezas (5 alitas ) acompañada con papas a la francesa y bañadas en Salsa BBq de tu preferencia. Escoge tu salsa entre: BBQ tradiciónal 😁, BBQ ranch 🔥, BBQ guayaba 🫕, Miel mostaza 🍯",
+    "imagen": "imgs/productos/malparados_alitas_alitasbbq.jpg",
+    "categoria": "alitas",
+    "precioNumerico": 26900
+  },
+  {
+    "id": 4,
+    "nombre": "CRUNCHYS DE POLLO X 24 UND",
+    "precio": "$ 33.500",
+    "descripcion": "Deliciosas bolitas de pollo marinadas y apanadas con panko y hojuelas de maíz, bañadas en salsa bbq y miel mostaza, acompañadas con 250 g de papas a la francesa, bañadas con salsa de queso cheddar y queso consteño, coronada con chips de Tocineta",
+    "imagen": "imgs/productos/malparados_alitas_crunchisx24und.jpg",
+    "categoria": "alitas",
+    "precioNumerico": 33500
+  },
+  {
+    "id": 5,
+    "nombre": "PROMO ALITAS",
+    "precio": "$ 55.900",
+    "descripcion": "no te pierdas está Mega PROMO que trae: 12 piezas de alitas apanadas 🪽🤤en Salsa bbq Y miel mostaza. 200 g de papas a la francesa 🍟🍟 Bañadas en queso 🧀 cheddar y trocitos de Tocineta 🥓 200 gramos de crujiente chicharrón carnudo 2 coca cola  personales",
+    "imagen": "imgs/productos/malparados_alitas_promoalitas.jpg",
+    "categoria": "alitas",
+    "precioNumerico": 55900
+  },
+  {
+    "id": 6,
+    "nombre": "CRUNCHYS DE POLLO X 12 UND",
+    "precio": "$ 20.500",
+    "descripcion": "Deliciosas bolitas de pollo, marinadas y empanizado más en panko y hojuelas de maíz, bañadas en salsa miel mostaza y bbq tradicional, acompañadas con 150 g de papas a la francesa, bañadas en salsa de queso cheddar, queso costeño y coronadas con chips de Tocineta",
+    "imagen": "imgs/productos/malparados_alitas_crunchysx12und.jpg",
+    "categoria": "alitas",
+    "precioNumerico": 20500
+  },
+  {
+    "id": 7,
+    "nombre": "ALITAS X 15 UND",
+    "precio": "$ 34.900",
+    "descripcion": "Prueba las  más crujientes y delicosas alitas  de pollo apanadas con  panco, 15piezas acompañada con papas a la francesa y bañadas en Salsa BBq de tu preferencia Escoge tu salsa entre : BBQ tradiciónal 😁BBQ ranch 🔥 BBQ guayaba 🫕 Miel mostaza 🍯",
+    "imagen": "imgs/productos/malparados_alitas_alitasx15und.jpg",
+    "categoria": "alitas",
+    "precioNumerico": 34900
+  },
+  {
+    "id": 8,
+    "nombre": "LIMONADA DE MARACUYÁ",
+    "precio": "$ 7.500",
+    "descripcion": "Disfruta de una refrescante limonada de maracuya con azúcar al gusto (vaso de 16 onzas )",
+    "imagen": "imgs/productos/malparados_bebidas_limonadamaracuya.jpg",
+    "categoria": "bebidas",
+    "precioNumerico": 7500
+  },
+  {
+    "id": 9,
+    "nombre": "COCA COLA P400",
+    "precio": "$ 3.800",
+    "descripcion": "",
+    "imagen": "imgs/productos/malparados_bebidas_p400.jpg",
+    "categoria": "bebidas",
+    "precioNumerico": 3800
+  },
+  {
+    "id": 10,
+    "nombre": "LIMONADA DE COCO",
+    "precio": "$ 10.000",
+    "descripcion": "Acompaña tu plato favorita con nuestra legendaria limonada de coco. 🥥 (vaso de 16 onzas )",
+    "imagen": "imgs/productos/malparados_bebidas_limonadadecoco.jpg",
+    "categoria": "bebidas",
+    "precioNumerico": 10000
+  },
+  {
+    "id": 11,
+    "nombre": "LIMONADA",
+    "precio": "$ 5.000",
+    "descripcion": "Limonada natural , le agregamos azúcar a su gusto (vaso de 16 onzas )",
+    "imagen": "imgs/productos/malparados_bebidas_limonada.jpg",
+    "categoria": "bebidas",
+    "precioNumerico": 5000
+  },
+  {
+    "id": 12,
+    "nombre": "COCA COLA 1.5",
+    "precio": "$ 8.000",
+    "descripcion": "",
+    "imagen": "imgs/productos/malparados_bebidas_cocacola15litro.jpg",
+    "categoria": "bebidas",
+    "precioNumerico": 8000
+  },
+  {
+    "id": 13,
+    "nombre": "LIMONADA CEREZADA",
+    "precio": "$ 8.500",
+    "descripcion": "Disfruta de una refrescante limonada de cereza con azúcar al gusto (vaso de 16 onzas",
+    "imagen": "imgs/productos/malparados_bebidas_limonadacerezada.jpg",
+    "categoria": "bebidas",
+    "precioNumerico": 8500
+  },
+  {
+    "id": 14,
+    "nombre": "BOWL TOKYO STREET",
+    "precio": "$ 18.000",
+    "descripcion": "Pollo en salsa agridulce estilo asiatico, maiz dorado, lechuga crujiente, tomate fresco y vinagreta, sobre arroz con cilantro aromático, acompanado de moneditas de plátano fritas. Disponible de 11:30 a 4pm",
+    "imagen": "imgs/productos/malparados_bowl_tokystreet.jpg",
+    "categoria": "bowls",
+    "precioNumerico": 18000
+  },
+  {
+    "id": 15,
+    "nombre": "PORKY BANDIDO",
+    "precio": "$ 18.000",
+    "descripcion": "Cerdo desmechado al barril, maiz dorado, lechuga crujiente y tomate fresco con un toque de vinagreta, sobre arroz con cilantro aromático y acompanado de madurito frito• dorado y jugoso. Disponible de 11:30 am a 4 pm",
+    "imagen": "imgs/productos/malparados_bowl_porkybandido.jpg",
+    "categoria": "bowls",
+    "precioNumerico": 18000
+  },
+  {
+    "id": 16,
+    "nombre": "CARNITA LOCA",
+    "precio": "$ 18.000",
+    "descripcion": "carne molida jugosa en salsa boloñesa, con maíz tierno, lechuga crujiente, tomate fresco y vinagreta, servido sobre arroz al cilantro y acompañado de papitas criollas bien doradas. Disponible de 11:30 am a 4 pm",
+    "imagen": "imgs/productos/malparados_bowl_carnitaloca.jpg",
+    "categoria": "bowls",
+    "precioNumerico": 18000
+  },
+  {
+    "id": 17,
+    "nombre": "COMBO RUNCHIS",
+    "precio": "$ 57.900",
+    "descripcion": "Disfruta en casa con tu persona favorita 😚 de dos hamburguesas con carne de res 180g con queso derretido, trocitos de chicharrón 🐖 con topping de aros de cebolla bañados en salsa BBQ y  queso 🧀 CHEDDAR, acompañadas con papas a la francesa, Coca-Cola p400, oreo y unas gomitas trululu 😍😍",
+    "imagen": "imgs/productos/malparados_combos_comborunchis.jpg",
+    "categoria": "combos",
+    "precioNumerico": 57900
+  },
+  {
+    "id": 18,
+    "nombre": "PROMO ALITAS",
+    "precio": "$ 55.900",
+    "descripcion": "no te pierdas está Mega PROMO que trae: 12 piezas de alitas apanadas 🪽🤤en Salsa bbq Y miel mostaza. 200 g de papas a la francesa 🍟🍟 Bañadas en queso 🧀 cheddar y trocitos de Tocineta 🥓 200 gramos de crujiente chicharrón carnudo 2 coca cola  personales",
+    "imagen": "imgs/productos/malparados_combos_promoalitas.jpg",
+    "categoria": "combos",
+    "precioNumerico": 55900
+  },
+  {
+    "id": 19,
+    "nombre": "PROMO PICADA PARA 2",
+    "precio": "$ 44.900",
+    "descripcion": "Disfruta de nuestra nueva picada echa al carbón 😮‍💨😮‍💨 carne de res 🥩 pollo 🍗, trozos de chicharrón  🐷, chorizo en melado de panela y pequeños trozos de queso costeño, acompañado con papas a la francesa y vegetale",
+    "imagen": "imgs/productos/malparados_combos_promopicadaparados.jpg",
+    "categoria": "combos",
+    "precioNumerico": 44900
+  },
+  {
+    "id": 20,
+    "nombre": "PROMO",
+    "precio": "$ 59.900",
+    "descripcion": "Disfruta de dos hamburguesas de carne de res con queso  blanco derretido, cronchys de pollo en miel mostaza, dándole ese toque dulce; crujientes aros de cebolla bañados en salsa cheddar y BBQ, acompañados de papas a la francesa. Además, recibe dos Coca-Colas personales y, como postre, un rico helado para cada uno. 🍦😍",
+    "imagen": "imgs/productos/malparados_combos_promo.jpg",
+    "categoria": "combos",
+    "precioNumerico": 59900
+  },
+  {
+    "id": 21,
+    "nombre": "PA' QUE NO JODA",
+    "precio": "$ 45.900",
+    "descripcion": "trae mas de 450 g de papas a la francesa🍟, papa criolla, delicioso madurito frito  y queso costeño,  Jugoso cerdo desmechado🐷, jugoso pollo desmechado 🐔, crujiente tocineta🥓,chorizo caramelizado en paneña, crujiente chicharrón",
+    "imagen": "imgs/productos/malparados_combos_paquenojoda.jpg",
+    "categoria": "combos",
+    "precioNumerico": 45900
+  },
+  {
+    "id": 22,
+    "nombre": "COSTILLAS BBQ",
+    "precio": "$ 28.900",
+    "descripcion": "Disfruta de 350 gramos de jugosa costillas echas a la parrilla, bañadas en salsa Bbq, acompañada con papas a la francesa",
+    "imagen": "imgs/productos/malparados_costillasbbq.jpg",
+    "categoria": "costillas",
+    "precioNumerico": 28900
+  },
+  {
+    "id": 23,
+    "nombre": "DESGRANADOS #1",
+    "precio": "$ 23.500",
+    "descripcion": "Maíz tierno mezclado con cremoso queso ,Chorizo premiun, Cerdo desmechadoy y topping de crujiente  chicharrón, acompañado con papas a la francesa",
+    "imagen": "imgs/productos/malparados_desgranados_desgranado1.jpg",
+    "categoria": "desgranados",
+    "precioNumerico": 23500
+  },
+  {
+    "id": 24,
+    "nombre": "DESGRANADOS #2",
+    "precio": "$ 23.500",
+    "descripcion": "Maíz tierno mezclado con cremoso queso ,  pollo desmechado Chorizo premium,papa cabello del ángel Topping de crujiente tocineta acompañado papas a la francesa",
+    "imagen": "imgs/productos/malparados_desgranados_desgranado2.jpg",
+    "categoria": "desgranados",
+    "precioNumerico": 23500
+  },
+  {
+    "id": 25,
+    "nombre": "PAPAS POCHIS",
+    "precio": "$ 15.900",
+    "descripcion": "250g de papas a la francesa bañadas en nuestras delicosa Salsa de la casa, y queso cheddar, con topping de nuestras legendaria Mermelada de tocino",
+    "imagen": "imgs/productos/malparados_entradas_papaspochis.jpg",
+    "categoria": "entradas",
+    "precioNumerico": 15900
+  },
+  {
+    "id": 26,
+    "nombre": "MALPARQUEADA",
+    "precio": "$ 25.500",
+    "descripcion": "Que mejor manera de comenzar con una entrada de 250g de crujiente trozos de chicharrón carnudo🐷. Acompañado con 200 g de papa criolla en mantequilla de romero",
+    "imagen": "imgs/productos/malparados_entradas_malparqueada.jpg",
+    "categoria": "entradas",
+    "precioNumerico": 25500
+  },
+  {
+    "id": 27,
+    "nombre": "AROS CRONCH",
+    "precio": "$ 18.000",
+    "descripcion": "Crocantes aros de cebolla apanados con pequeños trozos de hojuelas de maíz y panko, Bañados en una deliciosa salsa BBQ y queso cheddar",
+    "imagen": "imgs/productos/malparados_entradas_aroscronch.jpg",
+    "categoria": "entradas",
+    "precioNumerico": 18000
+  },
+  {
+    "id": 28,
+    "nombre": "CHEESE BURGER",
+    "precio": "$ 32.000",
+    "descripcion": "Carne de 180g de res con rico pollo desmechado, mezclado con Chorizo primium , huevo al sarten, esta burger viene bañada en mix de queso y rociada con chips de crujiente tocineta",
+    "imagen": "imgs/productos/malparados_hamburguesas_cheeseburger.jpg",
+    "categoria": "hamburguesas",
+    "precioNumerico": 32000
+  },
+  {
+    "id": 29,
+    "nombre": "CRONCHYS BURGER",
+    "precio": "$ 28.000",
+    "descripcion": "Esta hamburguesa viene con:Carne de res 180g 🥩 Queso  blanco derretido 🧀 Cronchis de pollo apañados con panko, bañados en una salsa miel mostaza🍯 Con topping de aros de cebolla bañados en queso cheddar 🧀 Pepinillos agridulce y suero costeño 🤤🤤🤤😁 Acompañada con 120 g de papas a la francesa",
+    "imagen": "imgs/productos/malparados_entradas_papaspochis.jpg",
+    "categoria": "hamburguesas",
+    "precioNumerico": 28000
+  },
+  {
+    "id": 30,
+    "nombre": "PORKY BURGER",
+    "precio": "$ 28.900",
+    "descripcion": "180g fe jugosa carne más 80g de jugoso lomo de cerdo desmechado, crujiente aros de cebolla apanados, crocantes trozos de chicharron en salsa BBQ y vegetales frescos",
+    "imagen": "imgs/productos/malparados_entradas_papaspochis.jpg",
+    "categoria": "hamburguesas",
+    "precioNumerico": 28900
+  },
+  {
+    "id": 31,
+    "nombre": "BURGER CRUNCH",
+    "precio": "$ 26.900",
+    "descripcion": "Carne de 180g Envuelta en crujiente tocineta con topping de aros de cebolla apanados, Bañados en sirope de pepinillos  y queso cheddar, acompañada con papa a la francesa",
+    "imagen": "imgs/productos/malparados_hamburguesas_burgercrunch.jpg",
+    "categoria": "hamburguesas",
+    "precioNumerico": 26900
+  },
+  {
+    "id": 32,
+    "nombre": "BANDIDA BURGER",
+    "precio": "$ 45.000",
+    "descripcion": "La burger más grande de malparados , con la convicción de 180g de carne, pollo désmechado, marrano desmechado, crujiente chicharrón,  mix de queso derretido, con Chorizo, maíz, crocante tocineta, topping de crujientes aros de cebolla apanado, Pepinillos agridulces y flameada en una brutal salsa de Whisky",
+    "imagen": "imgs/productos/malparados_hamburguesas_bandidaburger.jpg",
+    "categoria": "hamburguesas",
+    "precioNumerico": 45000
+  },
+  {
+    "id": 33,
+    "nombre": "CLÁSICA MALPARADOS",
+    "precio": "$ 20.500",
+    "descripcion": "Jugosa carne de res de 180g cubierta en queso derretido , crujiente tocineta, Pepinillos agridulces y vegetales frescos",
+    "imagen": "imgs/productos/malparados_hamburguesas_clasicamalparados.jpg",
+    "categoria": "hamburguesas",
+    "precioNumerico": 20500
+  },
+  {
+    "id": 34,
+    "nombre": "PERRO CHANDOSO",
+    "precio": "$ 23.900",
+    "descripcion": "Perfecta combinación de Salchicha americana más pollo u, con maíz tierno, papas fosforito, salsa de la casa, trocitos de  cebolla, tocineta y cremoso queso derrito",
+    "imagen": "imgs/productos/malparados_hotdogs_perrochandoso.jpg",
+    "categoria": "hotdogs",
+    "precioNumerico": 23900
+  },
+  {
+    "id": 35,
+    "nombre": "PERRO FIRULAIS",
+    "precio": "$ 23.900",
+    "descripcion": "Disfruta de la mejor combinación de Salchicha americana y jugosa carne de chancho esmechada, papas fosforito, queso blanco derretido, salsa de la casa, cebolla, trozos de Pepinillos agridulce y topping  de crujiente chicharrón",
+    "imagen": "imgs/productos/malparados_hotdogs_perrofirulais.jpg",
+    "categoria": "hotdogs",
+    "precioNumerico": 23900
+  },
+  {
+    "id": 36,
+    "nombre": "PERRO CHIHUAHUEÑO",
+    "precio": "$ 20.900",
+    "descripcion": "Brutal combinación de Salchichau americana y nuestra legendaria Mermelada de tocino, papas fosfórito, cebolla, Pepinillos agridulces, salsa de la casa, queso cheddar y cremoso queso blanco derretido",
+    "imagen": "imgs/productos/malparados_hotdogs_perrochihuaheno.jpg",
+    "categoria": "hotdogs",
+    "precioNumerico": 20900
+  },
+  {
+    "id": 37,
+    "nombre": "CHIKEN PAPAS",
+    "precio": "$ 26.500",
+    "descripcion": "250 de papá a la francesa y papá criolla, pollo desmechado, Salchicha americana, queso cheddar, que blanco derretido y tocineta",
+    "imagen": "imgs/productos/malparados_papaslocas_chikenpapas.jpg",
+    "categoria": "papaslocas",
+    "precioNumerico": 26500
+  },
+  {
+    "id": 38,
+    "nombre": "PAPAS CRONCH",
+    "precio": "$ 27.500",
+    "descripcion": "250g de papas a la francesa, Salchicha americana , Chorizo santarozano en melado de panela, maíz, queso derretido, trocitos de crujiente tocineta y como topping trozos de crocante chicharro",
+    "imagen": "imgs/productos/malparados_papaslocas_papascronch.jpg",
+    "categoria": "papaslocas",
+    "precioNumerico": 27500
+  },
+  {
+    "id": 39,
+    "nombre": "PROMO PICADA PARA 2",
+    "precio": "$ 44.900",
+    "descripcion": "Disfruta de nuestra nueva picada echa al carbón 😮‍💨😮‍💨 carne de res 🥩 pollo 🍗, trozos de chicharrón  🐷, chorizo en melado de panela y pequeños trozos de queso costeño, acompañado con papas a la francesa y vegetale",
+    "imagen": "imgs/productos/malparados_papaslocas_picadaparados.jpg",
+    "categoria": "papaslocas",
+    "precioNumerico": 44900
+  },
+  {
+    "id": 40,
+    "nombre": "PA' QUE NO JODA",
+    "precio": "$ 45.900",
+    "descripcion": "trae mas de 450 g de papas a la francesa🍟, papa criolla, delicioso madurito frito  y queso costeño,  Jugoso cerdo desmechado🐷, jugoso pollo desmechado 🐔, crujiente tocineta🥓,chorizo caramelizado en paneña, crujiente chicharrón",
+    "imagen": "imgs/productos/malparados_papaslocas_paquenojoda.jpg",
+    "categoria": "papaslocas",
+    "precioNumerico": 45900
+  },
+  {
+    "id": 41,
+    "nombre": "PAPAS CHANCHO",
+    "precio": "$ 23.900",
+    "descripcion": "Las más crocantes papas a la francesa 🍟 mezclado con madurito frito, chorizo primiun, Cerdo desmechado🍖, cremoso queso derretido🧀, queso cheddar y con topping de nuestra brutal Mermelada de tocino🍯 o trocitos de chicharrón",
+    "imagen": "imgs/productos/malparados_papaslocas_papaschancho.jpg",
+    "categoria": "papaslocas",
+    "precioNumerico": 23900
+  }
+]
