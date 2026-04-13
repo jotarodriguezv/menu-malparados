@@ -33,11 +33,30 @@
 
     body {
       background-color: var(--dark);
+      background-image: url('imgs/fondo.jpg');
+      background-size: cover;
+      background-position: center top;
+      background-attachment: fixed;
       color: var(--text);
       font-family: 'Poppins', sans-serif;
       font-size: 14px;
       min-height: 100vh;
       overflow-x: hidden;
+    }
+
+    /* Overlay oscuro sobre el fondo para que el contenido sea legible */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 10, 10, 0.82);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .header, .nav-sticky, .main, .footer {
+      position: relative;
+      z-index: 1;
     }
 
     /* ── HEADER ── */
@@ -249,11 +268,26 @@
       background: linear-gradient(90deg, var(--primary) 0%, transparent 100%);
     }
 
-    /* ── GRID PRODUCTOS ── */
+    /* ── GRID PRODUCTOS - RESPONSIVE ── */
     .products-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
+    }
+
+    /* Responsive: 4 columnas en escritorio */
+    @media (min-width: 768px) {
+      .products-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .products-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+      }
     }
 
     /* ── CARD PRODUCTO ── */
@@ -418,6 +452,21 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      cursor: zoom-in;
+      transition: transform 0.3s;
+    }
+
+    .modal-img-wrap:active .modal-img {
+      transform: scale(1.03);
+    }
+
+    .modal-no-img {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--card), var(--surface));
     }
 
     .modal-close-btn {
@@ -436,6 +485,38 @@
       align-items: center;
       justify-content: center;
       z-index: 10;
+    }
+
+    /* Flechas de navegación en el modal */
+    .modal-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 36px;
+      height: 36px;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 213, 33, 0.5);
+      border-radius: 50%;
+      color: var(--primary);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      transition: all 0.2s;
+    }
+
+    .modal-nav:active {
+      background: rgba(255, 213, 33, 0.2);
+    }
+
+    .modal-nav-prev {
+      left: 10px;
+    }
+
+    .modal-nav-next {
+      right: 10px;
     }
 
     .modal-body {
@@ -475,6 +556,50 @@
       letter-spacing: 1px;
     }
 
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+
+    .lightbox.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .lightbox img {
+      max-width: 95vw;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
     /* ── PROMO MODAL ── */
     .promo-overlay {
       position: fixed;
@@ -497,16 +622,21 @@
     .promo-box {
       position: relative;
       max-width: 90vw;
-      max-height: 80vh;
+      max-height: 90vh;
       border-radius: 12px;
       overflow: hidden;
       border: 2px solid var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .promo-img {
       width: 100%;
       height: auto;
       display: block;
+      object-fit: contain;
+      max-height: 90vh;
     }
 
     .promo-close {
@@ -612,7 +742,7 @@
   <!-- MAIN CONTENT -->
   <div class="main">
     <div class="hero">
-      <img src="imgs/logo.jpg" alt="Malparados" class="hero-logo">
+      <img src="imgs/logo.png" alt="Malparados" class="hero-logo">
       <div class="hero-title">MALPARADOS</div>
       <div class="hero-subtitle">Sabor sin reglas, actitud sin límites</div>
     </div>
@@ -630,6 +760,8 @@
     <div class="modal-sheet" id="modalSheet">
       <div class="modal-img-wrap" id="modalImgWrap">
         <button class="modal-close-btn" onclick="closeModal()">✕</button>
+        <button class="modal-nav modal-nav-prev" id="modalPrev" onclick="navigateModal(-1)">‹</button>
+        <button class="modal-nav modal-nav-next" id="modalNext" onclick="navigateModal(1)">›</button>
       </div>
       <div class="modal-body">
         <div class="modal-name" id="modalName"></div>
@@ -638,6 +770,12 @@
         <div class="modal-counter" id="modalCounter"></div>
       </div>
     </div>
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close">✕</button>
+    <img id="lightboxImg" src="" alt="">
   </div>
 
   <!-- PROMO MODAL -->
@@ -818,6 +956,7 @@
         img.className = 'modal-img';
         img.src = p.imagen;
         img.alt = p.nombre;
+        img.onclick = () => openLightbox(p.imagen);
         img.onerror = () => { img.remove(); wrap.insertAdjacentHTML('afterbegin', '<div class="modal-no-img">' + noImgHtml() + '</div>'); };
         wrap.insertAdjacentElement('afterbegin', img);
       } else {
@@ -830,6 +969,15 @@
 
       const total = currentCategoryProducts.length;
       document.getElementById('modalCounter').textContent = `${currentProductIndex + 1} / ${total}`;
+      document.getElementById('modalPrev').style.opacity = currentProductIndex === 0 ? '0.3' : '1';
+      document.getElementById('modalNext').style.opacity = currentProductIndex === total - 1 ? '0.3' : '1';
+    }
+
+    function navigateModal(dir) {
+      const next = currentProductIndex + dir;
+      if (next < 0 || next >= currentCategoryProducts.length) return;
+      currentProductIndex = next;
+      renderModal();
     }
 
     function closeModal() {
@@ -839,6 +987,29 @@
 
     function handleOverlayClick(e) {
       if (e.target === document.getElementById('modalOverlay')) closeModal();
+    }
+
+    // Swipe en el modal
+    let touchStartX = 0;
+    document.addEventListener('DOMContentLoaded', () => {
+      const modalSheet = document.getElementById('modalSheet');
+      if (modalSheet) {
+        modalSheet.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+        modalSheet.addEventListener('touchend', e => {
+          const diff = touchStartX - e.changedTouches[0].clientX;
+          if (Math.abs(diff) > 50) navigateModal(diff > 0 ? 1 : -1);
+        });
+      }
+    });
+
+    // ── LIGHTBOX ──
+    function openLightbox(src) {
+      document.getElementById('lightboxImg').src = src;
+      document.getElementById('lightbox').classList.add('open');
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('open');
     }
 
     // ── PROMO ──
@@ -868,9 +1039,14 @@
 
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') {
+        if (document.getElementById('lightbox').classList.contains('open')) closeLightbox();
         if (document.getElementById('modalOverlay').classList.contains('open')) closeModal();
         if (document.getElementById('promoOverlay').classList.contains('open')) closePromo();
         if (document.getElementById('sidebar').classList.contains('open')) closeSidebar();
+      }
+      if (document.getElementById('modalOverlay').classList.contains('open')) {
+        if (e.key === 'ArrowRight') navigateModal(1);
+        if (e.key === 'ArrowLeft') navigateModal(-1);
       }
     });
 
