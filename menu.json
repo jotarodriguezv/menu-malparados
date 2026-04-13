@@ -256,7 +256,7 @@
     "nombre": "CRONCHYS BURGER",
     "precio": "$ 28.000",
     "descripcion": "Esta hamburguesa viene con:Carne de res 180g 🥩 Queso  blanco derretido 🧀 Cronchis de pollo apañados con panko, bañados en una salsa miel mostaza🍯 Con topping de aros de cebolla bañados en queso cheddar 🧀 Pepinillos agridulce y suero costeño 🤤🤤🤤😁 Acompañada con 120 g de papas a la francesa",
-    "imagen": "imgs/productos/malparados_entradas_papaspochis.jpg",
+    "imagen": "imgs/productos/malparados_hamburguesas_cronchysburger.jpg",
     "categoria": "hamburguesas",
     "precioNumerico": 28000
   },
@@ -265,7 +265,7 @@
     "nombre": "PORKY BURGER",
     "precio": "$ 28.900",
     "descripcion": "180g fe jugosa carne más 80g de jugoso lomo de cerdo desmechado, crujiente aros de cebolla apanados, crocantes trozos de chicharron en salsa BBQ y vegetales frescos",
-    "imagen": "imgs/productos/malparados_entradas_papaspochis.jpg",
+    "imagen": "imgs/productos/malparados_hamburguesas_porkyburger.jpg",
     "categoria": "hamburguesas",
     "precioNumerico": 28900
   },
