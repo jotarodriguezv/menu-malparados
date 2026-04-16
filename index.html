@@ -39,7 +39,7 @@
       overflow-x: hidden;
     }
 
-    /* ── FONDO OPTIMIZADO (Solución para iPhone y Salto en Android) ── */
+    /* ── FONDO INFINITO (Corregido para que no se acabe) ── */
     .bg-container {
       position: fixed;
       top: 0;
@@ -50,14 +50,14 @@
       background-image: url('imgs/fondo.png');
       background-size: cover;
       background-position: center center;
-      will-change: transform;
+      background-repeat: no-repeat;
+      /* Eliminamos el transform dinámico para asegurar que cubra siempre el 100% */
     }
 
-    /* Overlay oscuro sobre el fondo */
     .bg-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(10, 10, 10, 0.82);
+      background: rgba(10, 10, 10, 0.85);
       z-index: -1;
       pointer-events: none;
     }
@@ -76,6 +76,7 @@
       justify-content: space-between;
       padding: 0 16px;
       z-index: 100;
+      box-shadow: 0 0 15px rgba(255, 213, 33, 0.2);
     }
 
     .menu-toggle {
@@ -96,6 +97,7 @@
       height: 3px;
       background: var(--primary);
       border-radius: 2px;
+      box-shadow: 0 0 5px var(--primary); /* Brillo en las barras del menú */
     }
 
     .logo-header {
@@ -105,7 +107,8 @@
       letter-spacing: 2px;
       color: var(--primary);
       text-transform: uppercase;
-      text-shadow: 0 0 10px rgba(255, 213, 33, 0.3);
+      /* RESTAURADO EL BRILLO (NEÓN) */
+      text-shadow: 0 0 10px var(--primary), 0 0 20px rgba(255, 213, 33, 0.6);
     }
 
     /* ── SIDEBAR MENU ── */
@@ -142,6 +145,7 @@
       font-size: 20px;
       color: var(--primary);
       text-transform: uppercase;
+      text-shadow: 0 0 8px var(--primary);
     }
 
     .close-menu {
@@ -167,9 +171,7 @@
       text-transform: uppercase;
       cursor: pointer;
       background: transparent;
-      border-left: none;
-      border-right: none;
-      border-top: none;
+      border: none;
       width: 100%;
       text-align: left;
       transition: 0.2s;
@@ -218,6 +220,7 @@
       height: 100px;
       margin: 0 auto 16px;
       object-fit: contain;
+      filter: drop-shadow(0 0 10px var(--primary));
     }
 
     .hero-title {
@@ -227,6 +230,8 @@
       color: var(--primary);
       text-transform: uppercase;
       margin-bottom: 8px;
+      /* RESTAURADO EL BRILLO (NEÓN) */
+      text-shadow: 0 0 15px var(--primary), 0 0 30px rgba(255, 213, 33, 0.4);
     }
 
     .hero-subtitle {
@@ -253,12 +258,14 @@
       font-size: 26px;
       color: var(--primary);
       text-transform: uppercase;
+      text-shadow: 0 0 5px rgba(255, 213, 33, 0.5);
     }
 
     .category-line {
       flex: 1;
       height: 2px;
       background: linear-gradient(90deg, var(--primary) 0%, transparent 100%);
+      box-shadow: 0 0 5px var(--primary);
     }
 
     /* ── GRID PRODUCTOS ── */
@@ -288,6 +295,7 @@
     .product-card:active {
       transform: scale(0.97);
       border-color: var(--primary);
+      box-shadow: 0 0 10px rgba(255, 213, 33, 0.3);
     }
 
     .card-img-wrap {
@@ -343,14 +351,14 @@
     .list-name { font-size: 13px; font-weight: 500; }
     .list-price { color: var(--primary); font-weight: 700; }
 
-    /* ── MODAL PRODUCTO OPTIMIZADO PARA PC ── */
+    /* ── MODAL PRODUCTO ── */
     .modal-overlay {
       position: fixed;
       inset: 0;
       background: rgba(0, 0, 0, 0.9);
       z-index: 500;
       display: flex;
-      align-items: center; /* Centrado vertical en PC */
+      align-items: center;
       justify-content: center;
       opacity: 0;
       pointer-events: none;
@@ -364,7 +372,7 @@
 
     .modal-sheet {
       width: 100%;
-      max-width: 500px; /* Limitar ancho en PC */
+      max-width: 500px;
       max-height: 90vh;
       background: var(--surface);
       border-radius: 16px;
@@ -374,9 +382,9 @@
       transform: translateY(20px);
       transition: transform 0.3s ease;
       margin: 16px;
+      border: 1px solid var(--border);
     }
 
-    /* Ajuste para móvil: que suba desde abajo */
     @media (max-width: 767px) {
       .modal-overlay { align-items: flex-end; }
       .modal-sheet {
@@ -386,10 +394,6 @@
         transform: translateY(100%);
       }
       .modal-overlay.open .modal-sheet { transform: translateY(0); }
-    }
-
-    .modal-overlay.open .modal-sheet {
-      transform: translateY(0);
     }
 
     .modal-img-wrap {
@@ -436,6 +440,7 @@
       font-size: 20px;
       z-index: 10;
       display: flex; align-items: center; justify-content: center; cursor: pointer;
+      box-shadow: 0 0 10px rgba(255, 213, 33, 0.3);
     }
 
     .modal-nav-prev { left: 10px; }
@@ -453,6 +458,7 @@
       color: var(--primary);
       margin-bottom: 8px;
       text-transform: uppercase;
+      text-shadow: 0 0 8px rgba(255, 213, 33, 0.4);
     }
 
     .modal-price {
@@ -490,7 +496,7 @@
     }
 
     .lightbox.open { opacity: 1; pointer-events: all; }
-    .lightbox img { max-width: 95vw; max-height: 90vh; object-fit: contain; border-radius: 8px; }
+    .lightbox img { max-width: 95vw; max-height: 90vh; object-fit: contain; border-radius: 8px; border: 1px solid var(--primary); }
     .lightbox-close {
       position: absolute; top: 16px; right: 16px; width: 40px; height: 40px;
       border-radius: 50%; background: rgba(0,0,0,0.7); border: 1px solid var(--primary);
@@ -520,6 +526,7 @@
       border: 2px solid var(--primary);
       border-radius: 12px;
       overflow: hidden;
+      box-shadow: 0 0 30px rgba(255, 213, 33, 0.3);
     }
 
     .promo-img { width: 100%; height: auto; display: block; object-fit: contain; max-height: 90vh; }
@@ -536,7 +543,7 @@
       border-radius: 50%; background: var(--primary); border: none; color: var(--dark);
       font-size: 18px; font-weight: 700; cursor: pointer; display: flex;
       align-items: center; justify-content: center; opacity: 0; pointer-events: none;
-      transition: 0.3s; z-index: 90;
+      transition: 0.3s; z-index: 90; box-shadow: 0 0 15px var(--primary);
     }
     .scroll-top.visible { opacity: 1; pointer-events: all; }
 
@@ -544,8 +551,8 @@
   </style>
 </head>
 <body>
-  <!-- FONDO DINÁMICO -->
-  <div class="bg-container" id="bgContainer"></div>
+  <!-- FONDO INFINITO (Fijo sin transform para evitar que se acabe) -->
+  <div class="bg-container"></div>
   <div class="bg-overlay"></div>
 
   <!-- HEADER -->
@@ -753,13 +760,8 @@
 
     function initScrollEffects() {
       const btn = document.getElementById('scrollTop');
-      const bg = document.getElementById('bgContainer');
       window.addEventListener('scroll', () => {
         btn.classList.toggle('visible', window.scrollY > 300);
-        // Efecto Parallax suave
-        const speed = 0.2;
-        const yPos = -(window.scrollY * speed);
-        bg.style.transform = `translate3d(0, ${yPos}px, 0)`;
       }, { passive: true });
       btn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
     }
