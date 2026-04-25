@@ -32,9 +32,13 @@
 
     body {
       background-color: var(--dark);
-      /* FONDO INFINITO MÓVIL: Se repite verticalmente y baja con el scroll */
+      /* FONDO INFINITO MÓVIL AJUSTADO: 
+         - background-size: 100% auto = adapta al ancho de pantalla, altura proporcional
+         - repeat-y = se repite hacia abajo infinitamente
+         - scroll = se mueve con el contenido
+      */
       background-image: url('imgs/fondo.png');
-      background-size: cover;
+      background-size: 100% auto;
       background-position: center top;
       background-repeat: repeat-y;
       background-attachment: scroll;
