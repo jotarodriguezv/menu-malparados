@@ -32,6 +32,12 @@
 
     body {
       background-color: var(--dark);
+      /* FONDO INFINITO MÓVIL: Se repite verticalmente y baja con el scroll */
+      background-image: url('imgs/fondo.jpg');
+      background-size: cover;
+      background-position: center top;
+      background-repeat: repeat-y;
+      background-attachment: scroll;
       color: var(--text);
       font-family: 'Poppins', sans-serif;
       font-size: 14px;
@@ -39,27 +45,19 @@
       overflow-x: hidden;
     }
 
-    /* ── FONDO INFINITO (Corregido para que no se acabe) ── */
-    .bg-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -2;
-      background-image: url('imgs/fondo.png');
-      background-size: cover;
-      background-position: center center;
-      background-repeat: no-repeat;
-      /* Eliminamos el transform dinámico para asegurar que cubra siempre el 100% */
-    }
-
-    .bg-overlay {
+    /* Overlay oscuro sobre el fondo para legibilidad */
+    body::before {
+      content: '';
       position: fixed;
       inset: 0;
       background: rgba(10, 10, 10, 0.85);
       z-index: -1;
       pointer-events: none;
+    }
+
+    .header, .nav-sticky, .main, .footer {
+      position: relative;
+      z-index: 1;
     }
 
     /* ── HEADER ── */
@@ -89,6 +87,11 @@
       flex-direction: column;
       gap: 4px;
       padding: 8px;
+      transition: transform 0.2s;
+    }
+
+    .menu-toggle:active {
+      transform: scale(0.95);
     }
 
     .menu-toggle span {
@@ -97,7 +100,7 @@
       height: 3px;
       background: var(--primary);
       border-radius: 2px;
-      box-shadow: 0 0 5px var(--primary); /* Brillo en las barras del menú */
+      box-shadow: 0 0 5px var(--primary);
     }
 
     .logo-header {
@@ -107,7 +110,6 @@
       letter-spacing: 2px;
       color: var(--primary);
       text-transform: uppercase;
-      /* RESTAURADO EL BRILLO (NEÓN) */
       text-shadow: 0 0 10px var(--primary), 0 0 20px rgba(255, 213, 33, 0.6);
     }
 
@@ -154,6 +156,11 @@
       color: var(--text);
       font-size: 28px;
       cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .close-menu:active {
+      transform: scale(0.95);
     }
 
     .sidebar-nav {
@@ -171,17 +178,23 @@
       text-transform: uppercase;
       cursor: pointer;
       background: transparent;
-      border: none;
+      border-left: none;
+      border-right: none;
+      border-top: none;
       width: 100%;
       text-align: left;
-      transition: 0.2s;
+      transition: all 0.2s;
     }
 
-    .sidebar-link:active, .sidebar-link.active {
-      background: rgba(255, 213, 33, 0.1);
+    /* EFECTO DE RESALTADO EN SIDEBAR */
+    .sidebar-link:hover,
+    .sidebar-link:active,
+    .sidebar-link.active {
+      background: rgba(255, 213, 33, 0.15);
       color: var(--primary);
       border-left: 4px solid var(--primary);
       padding-left: 16px;
+      text-shadow: 0 0 5px rgba(255, 213, 33, 0.5);
     }
 
     /* ── OVERLAY ── */
@@ -230,7 +243,6 @@
       color: var(--primary);
       text-transform: uppercase;
       margin-bottom: 8px;
-      /* RESTAURADO EL BRILLO (NEÓN) */
       text-shadow: 0 0 15px var(--primary), 0 0 30px rgba(255, 213, 33, 0.4);
     }
 
@@ -289,13 +301,20 @@
       overflow: hidden;
       border: 1px solid var(--border);
       cursor: pointer;
-      transition: transform 0.2s, border-color 0.2s;
+      transition: all 0.2s;
+    }
+
+    /* EFECTO DE RESALTADO EN TARJETAS */
+    .product-card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 0 12px rgba(255, 213, 33, 0.4), inset 0 0 8px rgba(255, 213, 33, 0.1);
+      transform: translateY(-2px);
     }
 
     .product-card:active {
       transform: scale(0.97);
       border-color: var(--primary);
-      box-shadow: 0 0 10px rgba(255, 213, 33, 0.3);
+      box-shadow: 0 0 15px rgba(255, 213, 33, 0.6), inset 0 0 10px rgba(255, 213, 33, 0.2);
     }
 
     .card-img-wrap {
@@ -310,6 +329,11 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: transform 0.3s;
+    }
+
+    .product-card:hover .card-img {
+      transform: scale(1.05);
     }
 
     .card-body {
@@ -322,6 +346,12 @@
       color: var(--text);
       margin-bottom: 4px;
       text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .product-card:hover .card-name {
+      color: var(--primary);
+      text-shadow: 0 0 5px rgba(255, 213, 33, 0.4);
     }
 
     .card-price {
@@ -346,10 +376,36 @@
       align-items: center;
       background: var(--card);
       padding: 14px 16px;
+      transition: all 0.2s;
+      cursor: pointer;
     }
 
-    .list-name { font-size: 13px; font-weight: 500; }
-    .list-price { color: var(--primary); font-weight: 700; }
+    /* EFECTO DE RESALTADO EN LISTA */
+    .list-item:hover {
+      background: rgba(255, 213, 33, 0.1);
+      border-left: 3px solid var(--primary);
+      padding-left: 13px;
+    }
+
+    .list-item:active {
+      background: rgba(255, 213, 33, 0.2);
+      box-shadow: inset 0 0 8px rgba(255, 213, 33, 0.3);
+    }
+
+    .list-name {
+      font-size: 13px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .list-item:hover .list-name {
+      color: var(--primary);
+    }
+
+    .list-price {
+      color: var(--primary);
+      font-weight: 700;
+    }
 
     /* ── MODAL PRODUCTO ── */
     .modal-overlay {
@@ -396,6 +452,10 @@
       .modal-overlay.open .modal-sheet { transform: translateY(0); }
     }
 
+    .modal-overlay.open .modal-sheet {
+      transform: translateY(0);
+    }
+
     .modal-img-wrap {
       position: relative;
       width: 100%;
@@ -410,6 +470,11 @@
       height: 100%;
       object-fit: cover;
       cursor: zoom-in;
+      transition: transform 0.3s;
+    }
+
+    .modal-img-wrap:active .modal-img {
+      transform: scale(1.03);
     }
 
     .modal-close-btn {
@@ -424,7 +489,16 @@
       color: var(--primary);
       font-size: 20px;
       z-index: 10;
-      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .modal-close-btn:hover {
+      background: rgba(255, 213, 33, 0.2);
+      box-shadow: 0 0 10px var(--primary);
     }
 
     .modal-nav {
@@ -439,8 +513,17 @@
       color: var(--primary);
       font-size: 20px;
       z-index: 10;
-      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
       box-shadow: 0 0 10px rgba(255, 213, 33, 0.3);
+      transition: all 0.2s;
+    }
+
+    .modal-nav:hover {
+      background: rgba(255, 213, 33, 0.2);
+      box-shadow: 0 0 15px var(--primary);
     }
 
     .modal-nav-prev { left: 10px; }
@@ -495,13 +578,40 @@
       transition: opacity 0.2s;
     }
 
-    .lightbox.open { opacity: 1; pointer-events: all; }
-    .lightbox img { max-width: 95vw; max-height: 90vh; object-fit: contain; border-radius: 8px; border: 1px solid var(--primary); }
+    .lightbox.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .lightbox img {
+      max-width: 95vw;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 8px;
+      border: 1px solid var(--primary);
+    }
+
     .lightbox-close {
-      position: absolute; top: 16px; right: 16px; width: 40px; height: 40px;
-      border-radius: 50%; background: rgba(0,0,0,0.7); border: 1px solid var(--primary);
-      color: var(--primary); font-size: 24px; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      font-size: 24px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .lightbox-close:hover {
+      background: rgba(255, 213, 33, 0.2);
+      box-shadow: 0 0 10px var(--primary);
     }
 
     /* ── PROMO MODAL ── */
@@ -518,7 +628,11 @@
       transition: opacity 0.3s;
     }
 
-    .promo-overlay.open { opacity: 1; pointer-events: all; }
+    .promo-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
     .promo-box {
       position: relative;
       max-width: 90vw;
@@ -529,32 +643,86 @@
       box-shadow: 0 0 30px rgba(255, 213, 33, 0.3);
     }
 
-    .promo-img { width: 100%; height: auto; display: block; object-fit: contain; max-height: 90vh; }
+    .promo-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: contain;
+      max-height: 90vh;
+    }
+
     .promo-close {
-      position: absolute; top: 12px; right: 12px; width: 36px; height: 36px;
-      border-radius: 50%; background: rgba(0,0,0,0.7); border: 1px solid var(--primary);
-      color: var(--primary); font-size: 20px; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .promo-close:hover {
+      background: rgba(255, 213, 33, 0.2);
+      box-shadow: 0 0 10px var(--primary);
     }
 
     /* ── SCROLL TOP ── */
     .scroll-top {
-      position: fixed; bottom: 20px; right: 20px; width: 44px; height: 44px;
-      border-radius: 50%; background: var(--primary); border: none; color: var(--dark);
-      font-size: 18px; font-weight: 700; cursor: pointer; display: flex;
-      align-items: center; justify-content: center; opacity: 0; pointer-events: none;
-      transition: 0.3s; z-index: 90; box-shadow: 0 0 15px var(--primary);
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: none;
+      color: var(--dark);
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s;
+      z-index: 90;
+      box-shadow: 0 0 15px var(--primary);
     }
-    .scroll-top.visible { opacity: 1; pointer-events: all; }
 
-    .footer { text-align: center; padding: 30px; font-size: 11px; color: var(--text-muted); border-top: 1px solid var(--border); margin-top: 40px; }
+    .scroll-top.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .scroll-top:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px var(--primary);
+    }
+
+    .scroll-top:active {
+      transform: scale(0.95);
+    }
+
+    .footer {
+      text-align: center;
+      padding: 30px;
+      font-size: 11px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      margin-top: 40px;
+    }
   </style>
 </head>
 <body>
-  <!-- FONDO INFINITO (Fijo sin transform para evitar que se acabe) -->
-  <div class="bg-container"></div>
-  <div class="bg-overlay"></div>
-
   <!-- HEADER -->
   <div class="header">
     <button class="menu-toggle" id="menuToggle">
@@ -578,7 +746,7 @@
   <!-- MAIN CONTENT -->
   <div class="main">
     <div class="hero">
-      <img src="imgs/logo.jpg" alt="Malparados" class="hero-logo">
+      <img src="imgs/logo.png" alt="Malparados" class="hero-logo">
       <div class="hero-title">MALPARADOS</div>
       <div class="hero-subtitle">Sabor sin reglas, actitud sin límites</div>
     </div>
