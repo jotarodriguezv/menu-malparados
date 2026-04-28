@@ -793,172 +793,293 @@
   </div>
 
   <script>
-    const CONFIG = {
-      restaurante: "Malparados",
-      promo: { activa: true, imagen: "imgs/promo.jpg" },
-      categorias: [
-        { id: "hamburguesas", label: "Hamburguesas" },
-        { id: "hotdogs", label: "Hot Dogs" },
-        { id: "papas_locas", label: "Papas Locas" },
-        { id: "combos", label: "Combos" },
-        { id: "desgranados", label: "Desgranados" },
-        { id: "alitas", label: "Alitas" },
-        { id: "entradas", label: "Entradas" },
-        { id: "bowls", label: "Bowls" },
-        { id: "bebidas", label: "Bebidas" },
-        { id: "adicionales", label: "Adicionales" }
-      ],
-      sinFotos: ["adicionales", "bebidas"]
+// ── SUPABASE CONFIG ───────────────────────────────────────────
+const SUPABASE_URL     = 'https://tllpmdhkdlqoqpnqmuwn.supabase.co';
+const SUPABASE_KEY     = 'sb_publishable_PqQsGWYjDAu8oq9ABB1hnQ_658qW8RB';
+const RESTAURANTE_SLUG = 'malparados';
+
+async function sbFetch(tabla, params = '') {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${tabla}?${params}`, {
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${SUPABASE_KEY}`
+    }
+  });
+  if (!res.ok) throw new Error(`Supabase error ${res.status} en ${tabla}`);
+  return res.json();
+}
+
+// ── ESTADO GLOBAL ─────────────────────────────────────────────
+let restaurante             = null;
+let categorias              = [];
+let productos               = [];
+let currentCategoryProducts = [];
+let currentProductIndex     = 0;
+
+// ── INIT ──────────────────────────────────────────────────────
+async function init() {
+  try {
+    showLoading(true);
+
+    // 1. Datos del restaurante
+    const restData = await sbFetch('restaurantes', `slug=eq.${RESTAURANTE_SLUG}&select=*`);
+    if (!restData.length) throw new Error('Restaurante no encontrado');
+    restaurante = restData[0];
+
+    // 2. Colores dinámicos desde la BD
+    document.documentElement.style.setProperty('--primary', restaurante.color_primario  || '#ffd521');
+    document.documentElement.style.setProperty('--accent',  restaurante.color_primario  || '#ffd521');
+
+    // 3. Categorías ordenadas
+    categorias = await sbFetch('categorias',
+      `restaurante_id=eq.${restaurante.id}&select=*&order=orden.asc`
+    );
+
+    // 4. Productos disponibles ordenados por precio
+    productos = await sbFetch('productos',
+      `restaurante_id=eq.${restaurante.id}&disponible=eq.true&select=*&order=precio_numerico.asc`
+    );
+
+    showLoading(false);
+    buildSidebar();
+    buildMenu();
+    initScrollEffects();
+
+    // 5. Promo solo si está activa en la BD
+    if (restaurante.promo_activa && restaurante.promo_imagen_url) {
+      setTimeout(() => openPromo(), 800);
+    }
+
+  } catch (err) {
+    console.error('Error cargando menú:', err);
+    showLoading(false);
+    document.getElementById('mainContent').innerHTML =
+      `<p style="text-align:center;padding:40px;color:var(--text-muted)">
+        No se pudo cargar el menú. Intenta de nuevo.
+      </p>`;
+  }
+}
+
+function showLoading(show) {
+  let el = document.getElementById('loadingMsg');
+  if (show && !el) {
+    el = document.createElement('div');
+    el.id = 'loadingMsg';
+    el.style.cssText = 'text-align:center;padding:60px 20px;color:var(--text-muted);font-size:14px;letter-spacing:2px';
+    el.textContent = 'Cargando menú...';
+    document.getElementById('mainContent').appendChild(el);
+  } else if (!show && el) {
+    el.remove();
+  }
+}
+
+// ── SIDEBAR ───────────────────────────────────────────────────
+function buildSidebar() {
+  const nav = document.getElementById('sidebarNav');
+  nav.innerHTML = '';
+  categorias.forEach(cat => {
+    const tieneProductos = productos.some(p => p.categoria_id === cat.id);
+    if (!tieneProductos) return;
+    const link = document.createElement('button');
+    link.className = 'sidebar-link';
+    link.textContent = `${cat.emoji || ''} ${cat.nombre}`.trim();
+    link.onclick = () => {
+      document.getElementById('sec-' + cat.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      closeSidebar();
     };
+    nav.appendChild(link);
+  });
+}
 
-    let menuData = [];
-    let currentCategoryProducts = [];
-    let currentProductIndex = 0;
+function openSidebar() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
 
-    async function init() {
-      try {
-        const res = await fetch('menu.json');
-        menuData = await res.json();
-      } catch (e) { console.warn('menu.json no encontrado'); menuData = []; }
-      buildSidebar();
-      buildMenu();
-      initScrollEffects();
-      if (CONFIG.promo.activa) setTimeout(() => openPromo(), 800);
-    }
+// ── MENÚ ──────────────────────────────────────────────────────
+function buildMenu() {
+  const main = document.getElementById('mainContent');
+  main.innerHTML = '';
 
-    function buildSidebar() {
-      const nav = document.getElementById('sidebarNav');
-      CONFIG.categorias.forEach((cat) => {
-        const productos = menuData.filter(p => p.categoria === cat.id);
-        if (productos.length === 0) return;
-        const link = document.createElement('button');
-        link.className = 'sidebar-link';
-        link.textContent = cat.label;
-        link.onclick = () => {
-          document.getElementById('sec-' + cat.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          closeSidebar();
-        };
-        nav.appendChild(link);
+  categorias.forEach(cat => {
+    const prods = productos.filter(p => p.categoria_id === cat.id);
+    if (!prods.length) return;
+
+    const section = document.createElement('div');
+    section.className = 'category-section';
+    section.id = 'sec-' + cat.id;
+    section.innerHTML = `
+      <div class="category-header">
+        <div class="category-title">${cat.emoji || ''} ${cat.nombre}</div>
+        <div class="category-line"></div>
+      </div>
+    `;
+
+    if (cat.sin_fotos) {
+      const list = document.createElement('div');
+      list.className = 'products-list';
+      prods.forEach(p => {
+        const item = document.createElement('div');
+        item.className = 'list-item';
+        item.innerHTML = `
+          <span class="list-name">${p.nombre}</span>
+          <span class="list-price">${p.precio}</span>
+        `;
+        list.appendChild(item);
       });
-    }
-
-    function openSidebar() { document.getElementById('sidebar').classList.add('open'); document.getElementById('overlay').classList.add('open'); document.body.style.overflow = 'hidden'; }
-    function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); document.body.style.overflow = ''; }
-
-    function buildMenu() {
-      const main = document.getElementById('mainContent');
-      main.innerHTML = '';
-      CONFIG.categorias.forEach(cat => {
-        const productos = menuData.filter(p => p.categoria === cat.id).sort((a, b) => (a.precioNumerico || 0) - (b.precioNumerico || 0));
-        if (productos.length === 0) return;
-        const section = document.createElement('div');
-        section.className = 'category-section';
-        section.id = 'sec-' + cat.id;
-        section.innerHTML = `<div class="category-header"><div class="category-title">${cat.label}</div><div class="category-line"></div></div>`;
-        if (CONFIG.sinFotos.includes(cat.id)) {
-          const list = document.createElement('div');
-          list.className = 'products-list';
-          productos.forEach(p => {
-            const item = document.createElement('div');
-            item.className = 'list-item';
-            item.innerHTML = `<span class="list-name">${p.nombre}</span><span class="list-price">${p.precio}</span>`;
-            list.appendChild(item);
-          });
-          section.appendChild(list);
-        } else {
-          const grid = document.createElement('div');
-          grid.className = 'products-grid';
-          productos.forEach((p, idx) => {
-            const card = document.createElement('div');
-            card.className = 'product-card';
-            card.onclick = () => openModal(cat.id, idx);
-            const imgHtml = p.imagen ? `<img class="card-img" src="${p.imagen}" alt="${p.nombre}" loading="lazy">` : `<div class="no-img-placeholder">🚫</div>`;
-            card.innerHTML = `<div class="card-img-wrap">${imgHtml}</div><div class="card-body"><div class="card-name">${p.nombre}</div><div class="card-price">${p.precio}</div></div>`;
-            grid.appendChild(card);
-          });
-          section.appendChild(grid);
-        }
-        main.appendChild(section);
+      section.appendChild(list);
+    } else {
+      const grid = document.createElement('div');
+      grid.className = 'products-grid';
+      prods.forEach((p, idx) => {
+        const card = document.createElement('div');
+        card.className = 'product-card' + (p.imagen_url ? ' has-img' : '');
+        card.onclick = () => openModal(cat.id, idx);
+        const imgHtml = p.imagen_url
+          ? `<img class="card-img" src="${p.imagen_url}" alt="${p.nombre}" loading="lazy" onerror="this.parentNode.innerHTML=noImgHtml()">`
+          : noImgHtml();
+        card.innerHTML = `
+          <div class="card-img-wrap">${imgHtml}</div>
+          <div class="card-body">
+            <div class="card-name">${p.nombre}</div>
+            <div class="card-price">${p.precio}</div>
+          </div>
+        `;
+        grid.appendChild(card);
       });
+      section.appendChild(grid);
     }
+    main.appendChild(section);
+  });
+}
 
-    function openModal(catId, idx) {
-      const productos = menuData.filter(p => p.categoria === catId).sort((a, b) => (a.precioNumerico || 0) - (b.precioNumerico || 0));
-      currentCategoryProducts = productos;
-      currentProductIndex = idx;
-      renderModal();
-      document.getElementById('modalOverlay').classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
+function noImgHtml() {
+  return `<div class="no-img-placeholder">
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1">
+      <rect x="3" y="3" width="18" height="18" rx="2"/>
+      <circle cx="8.5" cy="8.5" r="1.5"/>
+      <polyline points="21,15 16,10 5,21"/>
+    </svg>
+  </div>`;
+}
 
-    function renderModal() {
-      const p = currentCategoryProducts[currentProductIndex];
-      const wrap = document.getElementById('modalImgWrap');
-      const oldImg = wrap.querySelector('.modal-img, .no-img-placeholder');
-      if (oldImg) oldImg.remove();
-      if (p.imagen) {
-        const img = document.createElement('img');
-        img.className = 'modal-img'; img.src = p.imagen;
-        img.onclick = () => openLightbox(p.imagen);
-        wrap.insertAdjacentElement('afterbegin', img);
-      } else {
-        wrap.insertAdjacentHTML('afterbegin', '<div class="no-img-placeholder">🚫</div>');
-      }
-      document.getElementById('modalName').textContent = p.nombre;
-      document.getElementById('modalPrice').textContent = p.precio;
-      document.getElementById('modalDesc').textContent = p.descripcion || '';
-      const total = currentCategoryProducts.length;
-      document.getElementById('modalCounter').textContent = `${currentProductIndex + 1} / ${total}`;
-      document.getElementById('modalPrev').style.visibility = currentProductIndex === 0 ? 'hidden' : 'visible';
-      document.getElementById('modalNext').style.visibility = currentProductIndex === total - 1 ? 'hidden' : 'visible';
-    }
+// ── MODAL ─────────────────────────────────────────────────────
+function openModal(catId, idx) {
+  currentCategoryProducts = productos.filter(p => p.categoria_id === catId);
+  currentProductIndex = idx;
+  renderModal();
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
 
-    function navigateModal(dir) {
-      const next = currentProductIndex + dir;
-      if (next >= 0 && next < currentCategoryProducts.length) {
-        currentProductIndex = next;
-        renderModal();
-      }
-    }
+function renderModal() {
+  const p   = currentCategoryProducts[currentProductIndex];
+  const wrap = document.getElementById('modalImgWrap');
+  const oldImg = wrap.querySelector('.modal-img, .no-img-placeholder');
+  if (oldImg) oldImg.remove();
 
-    function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); document.body.style.overflow = ''; }
-    function handleOverlayClick(e) { if (e.target.id === 'modalOverlay') closeModal(); }
+  if (p.imagen_url) {
+    const img = document.createElement('img');
+    img.className = 'modal-img';
+    img.src = p.imagen_url;
+    img.alt = p.nombre;
+    img.onclick = () => openLightbox(p.imagen_url);
+    img.onerror = () => {
+      img.remove();
+      wrap.insertAdjacentHTML('afterbegin', `<div class="no-img-placeholder">${noImgHtml()}</div>`);
+    };
+    wrap.insertAdjacentElement('afterbegin', img);
+  } else {
+    wrap.insertAdjacentHTML('afterbegin', `<div class="no-img-placeholder">${noImgHtml()}</div>`);
+  }
 
-    function openLightbox(src) { document.getElementById('lightboxImg').src = src; document.getElementById('lightbox').classList.add('open'); }
-    function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+  document.getElementById('modalName').textContent  = p.nombre;
+  document.getElementById('modalPrice').textContent = p.precio;
+  document.getElementById('modalDesc').textContent  = p.descripcion || '';
 
-    function openPromo() { document.getElementById('promoOverlay').classList.add('open'); document.body.style.overflow = 'hidden'; }
-    function closePromo() { document.getElementById('promoOverlay').classList.remove('open'); document.body.style.overflow = ''; }
+  const total = currentCategoryProducts.length;
+  document.getElementById('modalCounter').textContent = `${currentProductIndex + 1} / ${total}`;
+  document.getElementById('modalPrev').style.visibility = currentProductIndex === 0         ? 'hidden' : 'visible';
+  document.getElementById('modalNext').style.visibility = currentProductIndex === total - 1 ? 'hidden' : 'visible';
+}
 
-    function initScrollEffects() {
-      const btn = document.getElementById('scrollTop');
-      window.addEventListener('scroll', () => {
-        btn.classList.toggle('visible', window.scrollY > 300);
-      }, { passive: true });
-      btn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+function navigateModal(dir) {
+  const next = currentProductIndex + dir;
+  if (next >= 0 && next < currentCategoryProducts.length) {
+    currentProductIndex = next;
+    renderModal();
+  }
+}
 
-    document.getElementById('menuToggle').onclick = openSidebar;
-    document.getElementById('closeMenu').onclick = closeSidebar;
-    document.getElementById('overlay').onclick = closeSidebar;
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function handleOverlayClick(e) {
+  if (e.target.id === 'modalOverlay') closeModal();
+}
 
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') { closeModal(); closeLightbox(); closePromo(); closeSidebar(); }
-      if (document.getElementById('modalOverlay').classList.contains('open')) {
-        if (e.key === 'ArrowRight') navigateModal(1);
-        if (e.key === 'ArrowLeft') navigateModal(-1);
-      }
-    });
+// ── LIGHTBOX ──────────────────────────────────────────────────
+function openLightbox(src) {
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+}
 
-    // Swipe en modal
-    let touchStartX = 0;
-    document.getElementById('modalSheet').addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
-    document.getElementById('modalSheet').addEventListener('touchend', e => {
-      const diff = touchStartX - e.changedTouches[0].clientX;
-      if (Math.abs(diff) > 50) navigateModal(diff > 0 ? 1 : -1);
-    });
+// ── PROMO ─────────────────────────────────────────────────────
+function openPromo() {
+  const img = document.querySelector('.promo-img');
+  if (img) img.src = restaurante.promo_imagen_url;
+  document.getElementById('promoOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closePromo() {
+  document.getElementById('promoOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
 
-    init();
+// ── SCROLL ────────────────────────────────────────────────────
+function initScrollEffects() {
+  const btn = document.getElementById('scrollTop');
+  window.addEventListener('scroll', () => {
+    btn.classList.toggle('visible', window.scrollY > 300);
+  }, { passive: true });
+  btn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── EVENTOS FIJOS ─────────────────────────────────────────────
+document.getElementById('menuToggle').onclick = openSidebar;
+document.getElementById('closeMenu').onclick  = closeSidebar;
+document.getElementById('overlay').onclick    = closeSidebar;
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeModal(); closeLightbox(); closePromo(); closeSidebar(); }
+  if (document.getElementById('modalOverlay').classList.contains('open')) {
+    if (e.key === 'ArrowRight') navigateModal(1);
+    if (e.key === 'ArrowLeft')  navigateModal(-1);
+  }
+});
+
+let touchStartX = 0;
+document.getElementById('modalSheet').addEventListener('touchstart', e => {
+  touchStartX = e.touches[0].clientX;
+}, { passive: true });
+document.getElementById('modalSheet').addEventListener('touchend', e => {
+  const diff = touchStartX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) navigateModal(diff > 0 ? 1 : -1);
+});
+
+// ── ARRANCAR ──────────────────────────────────────────────────
+init();
   </script>
+
 </body>
 </html>
