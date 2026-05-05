@@ -826,6 +826,17 @@ async function init() {
     if (!restData.length) throw new Error('Restaurante no encontrado');
     restaurante = restData[0];
 
+    // Verificar si el restaurante está activo
+    if (restaurante.activo === false) {
+      showLoading(false);
+      document.getElementById('mainContent').innerHTML = `
+        <div style="text-align:center;padding:80px 20px;">
+          <div style="font-size:48px;margin-bottom:16px;">🔒</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--primary);margin-bottom:8px;">Servicio no disponible</div>
+          <div style="font-size:14px;color:var(--text-muted)">Este menú no está disponible en este momento.</div>
+        </div>`;
+      return;
+    }
     // 2. Colores dinámicos desde la BD
     document.documentElement.style.setProperty('--primary', restaurante.color_primario  || '#ffd521');
     document.documentElement.style.setProperty('--accent',  restaurante.color_primario  || '#ffd521');
